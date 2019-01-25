@@ -1,12 +1,13 @@
-package main.java;
-
+package asbamboo;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class Application {
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
+    	Configure.run();
         SpringApplication.run(Application.class, args);  
     }
 

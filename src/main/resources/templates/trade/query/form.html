@@ -5,6 +5,43 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-    <p th:text="'query, ' + ${name} + '!'" />
+	<div th:text="${error_string}"></div>
+    <form method="post">
+    	<div><label>订单号（out_trade_no）:<input type="text" value="" id="out_trade_no" name="out_trade_no" /></label></div>
+    	<div><label>订单号（in_trade_no）:<input type="text" value="" id="in_trade_no" name="in_trade_no" /></label></div>
+    	<div><input type="submit" value="提交"></div>
+    </form>
+    <script th:inline="javascript">
+		cookies		= document.cookie.split(';');
+		for(i in cookies){
+			cookie	= cookies[i].split("=");
+			if(cookie[0] == "in_trade_no" || cookie[0] == " in_trade_no"){
+				document.getElementById("in_trade_no").value = cookie[1];
+				break;
+			}
+		}
+    </script>    
+    
+	<div th:unless="${#sets.isEmpty(query_response)}">
+		<ul>
+			<li><div>响应值HTTP Code：<span th:text="${query_response.getHttpCode()}">Code</span></div></li>			
+			<li><div>响应值：<span th:text="${query_response.getHttpBody()}">response</span></div></li>
+			<!--/*/ <th:block th:if="${query_response.getIsSuccess()}"> /*/-->
+			<li><div>订单号（in_trade_no）：<span th:text="${query_response.getInTradeNo()}">in_trade_no</span></div></li>
+			<li><div>订单号（out_trade_no）：<span th:text="${query_response.getOutTradeNo()}">out_trade_no</span></div></li>
+			<li><div>支付渠道：<span th:text="${query_response.getChannel()}">channel</span></div></li>
+			<li><div>交易标题：<span th:text="${query_response.getTitle()}">title</span></div></li>
+			<li><div>交易金额（单位为分）：<span th:text="${query_response.getTotalFee()}">0</span></div></li>
+			<li><div>二维码(买家扫商家)：<span th:text="${query_response.getQrCode()}">qr_code</span></div></li>
+			<li><div>交易状态：<span th:text="${query_response.getTradeStatus()}">trade_status</span></div></li>
+			<li><div>交易支付成功[可退款]时间：<span th:text="${query_response.getPayokYmdhis()}">0000-00-00</span></div></li>
+			<li><div>支付成功[不可退款]时间：<span th:text="${query_response.getPayedYmdhis()}">0000-00-00</span></div></li>
+			<li><div>取消时间：<span th:text="${query_response.getCancelYmdhis()}">0000-00-00</span></div></li>
+			<li><div>支付终端ip：<span th:text="${query_response.getClientIp()}">ip</span></div></li>
+		    <!--/*/ </th:block> /*/-->
+		</ul>
+	</div>
+	
+	<a href="/">回到索引页面</a>
 </body>
 </html>

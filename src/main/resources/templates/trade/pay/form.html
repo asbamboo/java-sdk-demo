@@ -5,6 +5,35 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-    <p th:text="'pay ' + ${name} + '!'" />
+	<div th:text="${error_string}"></div>
+    <form method="post" th:action="@{/trade/pay-process}">
+    	<div>
+    		<label>
+    			支付方式:
+    			<select name="channel">
+    				<option th:each="channel : ${channels}" th:text="*{channel}">支付渠道</option>
+    			</select>
+    		</label>
+    	</div>
+    	<div><label>交易标题:<input type="text" name="title" value="asbamboo-pay-java-demo" /></label></div>
+    	<div>
+    		<label>
+    			交易金额:
+    			<select name="total_fee">
+    				<option value="1">￥0.01</option>
+    				<option value="100">￥1.00</option>
+    				<option value="1000">￥10.00</option>
+    			</select>
+    		</label>
+    	</div>
+    	<div>
+    		<label>
+    			第三方平台特殊参数third_part(非必填):
+    			<textarea name="third_part"></textarea>
+    		</label>
+    	</div>
+    	<div><input type="submit" value="提交"></div>
+    </form>
+	<a href="/">回到索引页面</a>
 </body>
 </html>
