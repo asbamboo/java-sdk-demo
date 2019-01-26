@@ -1,9 +1,11 @@
 package asbamboo.controller;
 
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import asbamboo.Configure;
 import asbamboo.java.sdk.model.TradePayRequest;
@@ -35,6 +36,7 @@ public class TradePayController {
     	@RequestParam(name="total_fee", required=true, defaultValue="1") Integer total_fee,
     	@RequestParam(name="third_part", required=false, defaultValue="{}") String third_part,
 		HttpServletRequest request,
+		HttpServletResponse rep,
     	Model model
     ){
     	Date now				= new Date();
@@ -58,7 +60,9 @@ public class TradePayController {
     	
     	try{
 	    	if(channel.equals("ALIPAY_QRCD") || channel.equals("WXPAY_QRCD")){
-	    		return this.qrcd(trade_pay_request, model);
+	    		return this.qrcd(trade_pay_request, model, rep);
+	    	}else if(channel.equals("ALIPAY_PC") || channel.equals("WXPAY_H5")) {
+	    		return this.submit(trade_pay_request, model, rep);
 	    	}
     	}catch(Exception e) {
     		model.addAttribute("error_string", e.toString());
@@ -66,12 +70,25 @@ public class TradePayController {
     	return "trade/pay/form";
     }
     
-    private String qrcd(TradePayRequest trade_pay_request, Model model) throws Exception
+    private String qrcd(TradePayRequest trade_pay_request, Model model, HttpServletResponse rep) throws Exception
     {
 		TradePayResponse response	= (TradePayResponse) trade_pay_request.post();
 		model.addAttribute("pay_response", response);		
     	return "trade/pay/qrcd";
     }
+    
+    private String submit(TradePayRequest trade_pay_request, Model model, HttpServletResponse rep) throws Exception
+    {
+		PrintWriter out	= rep.getWriter();
+    	try{
+    		out.write(trade_pay_request.submit());
+    		out.flush();
+    	}finally{
+    		out.close();
+    	}
+    	return "";
+    }
+
     
     @PostMapping("/trade/pay-notify/{channel}")
     public String notity()
