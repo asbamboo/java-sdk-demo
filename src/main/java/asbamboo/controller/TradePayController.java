@@ -3,6 +3,9 @@ package asbamboo.controller;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,10 +16,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import asbamboo.Configure;
+import asbamboo.java.sdk.Logger;
+import asbamboo.java.sdk.Sign;
 import asbamboo.java.sdk.model.TradePayRequest;
 import asbamboo.java.sdk.model.TradePayResponse;
+import asbamboo.java.sdk.notify.PayNotify;
 import asbamboo.util.IpUtil;
 
 @Controller
@@ -90,15 +97,70 @@ public class TradePayController {
     }
 
     
+    @ResponseBody
     @PostMapping("/trade/pay-notify/{channel}")
-    public String notity()
-    {
-    	return "200";
+    public String notity(
+    	@RequestParam(name="channel", required=true, defaultValue="") String channel,
+		HttpServletRequest request
+    ){
+    	PayNotify	pn	= new PayNotify(request);
+    	StringBuilder result	= new StringBuilder();
+
+    	if(pn.checkSign()){
+    		//你应该自定义你的应用收到支付通知时的逻辑
+//    		String channel			= pn.getChannel();
+//    		String in_trade_no		= pn.getInTradeNo();
+//    		String out_trade_no		= pn.getOutTradeNo();
+//    		String title			= pn.getTitle();
+//    		String total_fee		= pn.getTotalFee();
+//    		String client_ip		= pn.getClientIp();
+//    		String trade_status		= pn.getTradeStatus();
+//    		String payok_ymdhis		= pn.getPayokYmdhis();
+//    		String payed_ymdhis		= pn.getPayedYmdhis();
+//    		String cancel_ymdhis	= pn.getCancelYmdhis();
+//    		String random			= pn.getRandom();
+//    		String sign				= pn.getSign();
+    		Enumeration<String> params	= request.getParameterNames();
+        	while(params.hasMoreElements()){
+        		String name			= params.nextElement();
+        		String value		= request.getParameterValues(name)[0];
+        		result.append(name + ":" + value + "\n");
+        	}
+    	}    	
+    	Logger.info("Notify:" + result.toString());
+    	return "SUCCESS";
     }
     
-    @RequestMapping("/trade/pay-return/{return}")
-    public String returnAction()
-    {
-    	return "";
+    @ResponseBody
+    @RequestMapping("/trade/pay-return/{channel}")
+    public String returnAction(
+    	@RequestParam(name="channel", required=true, defaultValue="") String channel,
+		HttpServletRequest request
+    ){
+    	PayNotify	pn	= new PayNotify(request);
+    	StringBuilder result	= new StringBuilder();
+
+    	if(pn.checkSign()){
+    		//你应该自定义你的应用收到支付通知时的逻辑
+//    		String channel			= pn.getChannel();
+//    		String in_trade_no		= pn.getInTradeNo();
+//    		String out_trade_no		= pn.getOutTradeNo();
+//    		String title			= pn.getTitle();
+//    		String total_fee		= pn.getTotalFee();
+//    		String client_ip		= pn.getClientIp();
+//    		String trade_status		= pn.getTradeStatus();
+//    		String payok_ymdhis		= pn.getPayokYmdhis();
+//    		String payed_ymdhis		= pn.getPayedYmdhis();
+//    		String cancel_ymdhis	= pn.getCancelYmdhis();
+//    		String random			= pn.getRandom();
+//    		String sign				= pn.getSign();
+    		Enumeration<String> params	= request.getParameterNames();
+        	while(params.hasMoreElements()){
+        		String name			= params.nextElement();
+        		String value		= request.getParameterValues(name)[0];
+        		result.append(name + ":" + value + "\n");
+        	}
+    	}    	
+    	return result.toString();
     }
 }
