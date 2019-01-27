@@ -32,6 +32,9 @@ dependencies {
     
     compile fileTree(dir:'libs', include:['*.jar'])
 
+    // Json
+  	compile 'com.google.code.gson:gson:2.8.5'
+
     testCompile("org.springframework.boot:spring-boot-starter-test")
 }
 
