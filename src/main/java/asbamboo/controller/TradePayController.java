@@ -23,7 +23,7 @@ import asbamboo.java.sdk.Logger;
 import asbamboo.java.sdk.Sign;
 import asbamboo.java.sdk.model.TradePayRequest;
 import asbamboo.java.sdk.model.TradePayResponse;
-import asbamboo.java.sdk.notify.PayNotify;
+import asbamboo.java.sdk.notify.TradePayNotify;
 import asbamboo.util.IpUtil;
 
 @Controller
@@ -103,7 +103,7 @@ public class TradePayController {
     	@RequestParam(name="channel", required=true, defaultValue="") String channel,
 		HttpServletRequest request
     ){
-    	PayNotify	pn	= new PayNotify(request);
+    	TradePayNotify	pn	= new TradePayNotify(request);
     	StringBuilder result	= new StringBuilder();
 
     	if(pn.checkSign()){
@@ -137,7 +137,7 @@ public class TradePayController {
     	@RequestParam(name="channel", required=true, defaultValue="") String channel,
 		HttpServletRequest request
     ){
-    	PayNotify	pn	= new PayNotify(request);
+    	TradePayNotify	pn	= new TradePayNotify(request);
     	StringBuilder result	= new StringBuilder();
 
     	if(pn.checkSign()){
