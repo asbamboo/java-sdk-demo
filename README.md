@@ -14,6 +14,36 @@ java-sdk-demo 的版本编号会保持与java-sdk的版本号一致，除了最�
 
 java-sdk-demo 程序基于 https://github.com/spring-guides/gs-serving-web-content 开发, 请参考springboot相关文档
 
+# 参数配置
+
+为运行 java-sdk-demo，你首先需要做好参数的配置,修改配置文件 `java-sdk-demo/src/main/java/asbamboo/Configure.java` 中的几个属性
+
+```
+user@~:~/java-sdk-demo/src/main/java/asbamboo$ cat Configure.java 
+package asbamboo;
+
+import java.io.File;
+
+/**
+ * 
+ * @author 李春寅<licy2013@aliyun.com>
+ * @date 2019年1月24日
+ */
+public class Configure 
+{
+	public static String API_URL = "http://developer.asbamboo.com/api"; //目前聚合平台有开发和正式两种环境。
+	
+	public static String API_APP_KEY = "你的应用的App key";
+	
+	public static String API_SECRET = "你的应用的 app SECRET"
+ 
+ ...
+}
+
+```
+如果你还没有app key与app secrect 请前往 http://www.asbamboo.com 配置。
+
+
 
 # java-sdk-demo 运行
 
