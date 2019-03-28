@@ -9,11 +9,11 @@ import java.io.File;
  */
 public class Configure 
 {
-	public static String API_URL			= "http://api.asbamboo.de";
+	public static String API_URL			= "http://developer.asbamboo.com/api";
 	
-	public static String API_APP_KEY		= "5c3adf7db89b8";
+	public static String API_APP_KEY		= "5c3074f378913";
 	
-	public static String API_SECRET			= "6c030d9bacbbc73dc5aabf9552e54f78";
+	public static String API_SECRET			= "3a91aa8a688e812ad8c9013eea122dae";
 
 	public static String API_VERSION		= "v1.0";
 	
