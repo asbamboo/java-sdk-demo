@@ -73,4 +73,55 @@ user@~:/java/java-sdk-demo$ ./gradlew bootRun
 
 如果在windows中运行 java-sdk-demo 请参考 https://docs.gradle.org/current/userguide/installation.html#microsoft_windows_users
 
+**使用docker运行**  
 
+使用DockerFile构建docker image，并且且运行docker container。
+
+```
+
+    licy@licy-N501JW:/java/java-sdk-demo$ sudo docker build . --tag=asbamboo/java-sdk-demo
+    Sending build context to Docker daemon  18.75MB
+    Step 1/5 : FROM java:8
+     ---> d23bdf5b1b1b
+    Step 2/5 : WORKDIR /app
+     ---> Running in 6f723951ff1b
+    Removing intermediate container 6f723951ff1b
+     ---> 37f6b1531ea7
+    Step 3/5 : COPY . /app
+     ---> c15aa04e58d9
+    Step 4/5 : EXPOSE 8080
+     ---> Running in 93952d12415c
+    Removing intermediate container 93952d12415c
+     ---> 377da364e150
+    Step 5/5 : CMD ["/app/gradlew", "bootRun"]
+     ---> Running in 63887cb04409
+    Removing intermediate container 63887cb04409
+     ---> f6f81475508c
+    Successfully built f6f81475508c
+    Successfully tagged asbamboo/java-sdk-demo:latest
+
+    licy@licy-N501JW:/java/java-sdk-demo$ sudo docker image ls
+    REPOSITORY                TAG                 IMAGE ID            CREATED             SIZE
+    asbamboo/java-sdk-demo    latest              f6f81475508c        4 minutes ago       662MB
+
+    licy@licy-N501JW:/java/java-sdk-demo$ sudo docker run -dp 8080:8080 --name java-sdk-demo asbamboo/java-sdk-demo
+    4e8010341fadef6316b45555f2d766c9d2b62b5f3b1c2f96f3c06e0b0df66695
+
+    licy@licy-N501JW:/java/java-sdk-demo$ sudo docker ps
+    CONTAINER ID        IMAGE                    COMMAND                  CREATED             STATUS              PORTS                      NAMES
+    4e8010341fad        asbamboo/java-sdk-demo   "/app/gradlew bootRun"   35 seconds ago      Up 32 seconds       0.0.0.0:8080->8080/tcp     java-sdk-demo
+
+        licy@licy-N501JW:/java/java-sdk-demo$ sudo docker logs java-sdk-demo -f
+    Downloading https://services.gradle.org/distributions/gradle-4.6-bin.zip
+    .........................
+    2019-03-31 03:10:51.329  INFO 93 --- [  restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+    2019-03-31 03:10:51.537  INFO 93 --- [  restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+    2019-03-31 03:10:51.577  INFO 93 --- [  restartedMain] o.s.j.e.a.AnnotationMBeanExporter        : Registering beans for JMX exposure on startup
+    2019-03-31 03:10:51.622  INFO 93 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+    2019-03-31 03:10:51.625  INFO 93 --- [  restartedMain] asbamboo.Application                     : Started Application in 2.395 seconds (JVM running for 2.727)  
+
+```
+
+然后在浏览器中运行demo：127.0.0.1:8080  
+
+![Image text](demo.png)
